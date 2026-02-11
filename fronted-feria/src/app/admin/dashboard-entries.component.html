@@ -1,0 +1,57 @@
+<div class="page" *ngIf="data() as d; else loadingOrError">
+  <h1>Dashboard de ingresos</h1>
+
+  <section class="cards">
+    <article class="card">
+      <h2>Total de estudiantes registrados</h2>
+      <p class="big">{{ d.totalStudents }}</p>
+    </article>
+
+    <article class="card">
+      <h2>Por género</h2>
+      <ul>
+        <li *ngFor="let g of d.byGender">
+          <span>{{ g.gender }}:</span>
+          <strong>{{ g.count }}</strong>
+        </li>
+      </ul>
+    </article>
+
+    <article class="card">
+      <h2>Por rango de edad</h2>
+      <ul>
+        <li *ngFor="let key of (d.byAgeRange | keyvalue)">
+          <span>{{ key.key }} años:</span>
+          <strong>{{ key.value }}</strong>
+        </li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="table-section">
+    <h2>Por unidad educativa</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Unidad educativa</th>
+          <th>Estudiantes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let entry of (d.byEducationUnit | keyvalue)">
+          <td>{{ entry.key }}</td>
+          <td>{{ entry.value }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</div>
+
+<ng-template #loadingOrError>
+  <div class="page">
+    <p *ngIf="loading()">Cargando métricas...</p>
+    <p *ngIf="!loading() && error()" class="error">{{ error() }}</p>
+  </div>
+</ng-template>
+
+

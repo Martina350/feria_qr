@@ -1,0 +1,64 @@
+<div class="page">
+  <h1>Registro de estudiante</h1>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="grid">
+      <label>
+        Nombres
+        <input type="text" formControlName="firstName" />
+      </label>
+
+      <label>
+        Apellidos
+        <input type="text" formControlName="lastName" />
+      </label>
+    </div>
+
+    <div class="grid">
+      <label>
+        Edad
+        <input type="number" formControlName="age" min="5" max="25" />
+      </label>
+
+      <label>
+        Género
+        <select formControlName="gender">
+          <option value="MALE">Masculino</option>
+          <option value="FEMALE">Femenino</option>
+          <option value="OTHER">Otro / Prefiero no decir</option>
+        </select>
+      </label>
+    </div>
+
+    <label>
+      Unidad educativa
+      <input type="text" formControlName="unitEducation" />
+    </label>
+
+    <div class="grid">
+      <label>
+        Ciudad
+        <input type="text" formControlName="city" />
+      </label>
+
+      <label>
+        Provincia
+        <input type="text" formControlName="province" />
+      </label>
+    </div>
+
+    <label>
+      QR asignado (ID o código interno)
+      <input type="text" formControlName="qrCodeId" />
+    </label>
+
+    <button type="submit" [disabled]="form.invalid || loading()">
+      {{ loading() ? 'Guardando...' : 'Registrar estudiante' }}
+    </button>
+
+    <p class="success" *ngIf="success()">{{ success() }}</p>
+    <p class="error" *ngIf="error()">{{ error() }}</p>
+  </form>
+</div>
+
+

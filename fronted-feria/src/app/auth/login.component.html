@@ -1,0 +1,28 @@
+<div class="auth-container">
+  <h1>Ingreso al sistema</h1>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      Correo electrónico
+      <input type="email" formControlName="email" placeholder="admin@feria.com" />
+    </label>
+
+    <label>
+      Contraseña
+      <input type="password" formControlName="password" placeholder="••••••••" />
+    </label>
+
+    <button type="submit" [disabled]="form.invalid || loading()">
+      {{ loading() ? 'Ingresando...' : 'Ingresar' }}
+    </button>
+
+    <p class="error" *ngIf="error()">{{ error() }}</p>
+  </form>
+
+  <p class="link">
+    ¿No tienes usuario?
+    <a routerLink="/register-user">Regístrate aquí</a>
+  </p>
+</div>
+
+

@@ -1,0 +1,63 @@
+<div class="page" *ngIf="data().length; else loadingOrError">
+  <h1>Dashboard por stands</h1>
+
+  <div class="stands-grid">
+    <article class="stand-card" *ngFor="let s of data()">
+      <header>
+        <h2>{{ s.name }}</h2>
+        <p class="cooperative">{{ s.cooperativeName }}</p>
+        <p class="content-type">Contenido principal: {{ s.contentType }}</p>
+      </header>
+
+      <section *ngIf="s.metrics as m; else noData">
+        <p class="total">
+          Estudiantes capacitados: <strong>{{ m.totalStudents }}</strong>
+        </p>
+
+        <div class="mini-grid">
+          <div>
+            <h3>Por género</h3>
+            <ul>
+              <li *ngFor="let g of (m.byGender | keyvalue)">
+                <span>{{ g.key }}:</span>
+                <strong>{{ g.value }}</strong>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3>Por rango de edad</h3>
+            <ul>
+              <li *ngFor="let a of (m.byAgeRange | keyvalue)">
+                <span>{{ a.key }}:</span>
+                <strong>{{ a.value }}</strong>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <h3>Por tipo de contenido</h3>
+          <ul>
+            <li *ngFor="let c of (m.byContentType | keyvalue)">
+              <span>{{ c.key }}:</span>
+              <strong>{{ c.value }}</strong>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <ng-template #noData>
+        <p class="muted">Este stand aún no registra actividades.</p>
+      </ng-template>
+    </article>
+  </div>
+</div>
+
+<ng-template #loadingOrError>
+  <div class="page">
+    <p *ngIf="loading()">Cargando métricas...</p>
+    <p *ngIf="!loading() && error()" class="error">{{ error() }}</p>
+  </div>
+</ng-template>
+
+

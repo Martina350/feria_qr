@@ -1,0 +1,31 @@
+<div class="page">
+  <h1>Registro de actividad de stand</h1>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      QR del estudiante
+      <input type="text" formControlName="qrCodeId" placeholder="ID interno del QR" />
+    </label>
+
+    <label>
+      Tipo de contenido impartido
+      <select formControlName="contentType">
+        <option value="AHORRO">Ahorro</option>
+        <option value="FRAUDE">Prevención de fraude</option>
+        <option value="CREDITO">Crédito responsable</option>
+        <option value="PRESUPUESTO">Presupuesto</option>
+        <option value="INVERSION">Inversión</option>
+        <option value="SEGUROS">Seguros</option>
+      </select>
+    </label>
+
+    <button type="submit" [disabled]="form.invalid || loading()">
+      {{ loading() ? 'Guardando...' : 'Registrar actividad' }}
+    </button>
+
+    <p class="success" *ngIf="success()">{{ success() }}</p>
+    <p class="error" *ngIf="error()">{{ error() }}</p>
+  </form>
+</div>
+
+

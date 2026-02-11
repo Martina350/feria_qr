@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  COOPERATIVA
+}
+
+enum QRStatus {
+  DISPONIBLE
+  ASIGNADO
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum ContentType {
+  AHORRO
+  FRAUDE
+  CREDITO
+  PRESUPUESTO
+  INVERSION
+  SEGUROS
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      Role
+  standId   String?  
+  stand     Stand?   @relation(fields: [standId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Stand {
+  id              String   @id @default(uuid())
+  name            String
+  cooperativeName String
+  contentType     ContentType
+  isMandatory     Boolean  @default(false)
+  users           User[]
+  activities      ActivityCompletion[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model QRCode {
+  id         String    @id @default(uuid())
+  code       String    @unique 
+  status     QRStatus  @default(DISPONIBLE)
+  assignedAt DateTime?
+  student    Student?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Student {
+  id            String    @id @default(uuid())
+  firstName     String
+  lastName      String
+  age           Int
+  gender        Gender
+  unitEducation String
+  city          String
+  province      String
+  qrCodeId      String    @unique
+  qrCode        QRCode    @relation(fields: [qrCodeId], references: [id])
+  activities    ActivityCompletion[]
+  isCompleted   Boolean   @default(false) 
+  completedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model ActivityCompletion {
+  id          String      @id @default(uuid())
+  studentId   String
+  student     Student     @relation(fields: [studentId], references: [id])
+  standId     String
+  stand       Stand       @relation(fields: [standId], references: [id])
+  contentType ContentType
+  completedAt DateTime    @default(now())
+  completedBy String?     
+
+  @@unique([studentId, standId, contentType]) 
+}

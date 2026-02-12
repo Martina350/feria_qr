@@ -1,0 +1,72 @@
+<div class="page">
+  <h1>Gestión de QRs</h1>
+  <p class="intro">Carga códigos QR (uno por línea o separados por coma) y consulta el estado de los QRs.</p>
+
+  <section class="bulk-section">
+    <h2>Carga masiva</h2>
+    <div class="bulk-form">
+      <label>
+        Códigos (uno por línea, ej: GMW-001, GMW-002)
+        <textarea
+          [value]="bulkCodes()"
+          (input)="bulkCodes.set($any($event.target).value)"
+          rows="4"
+          placeholder="GMW-001&#10;GMW-002&#10;GMW-003"
+        ></textarea>
+      </label>
+      <button
+        type="button"
+        (click)="bulkCreate()"
+        [disabled]="!bulkCodes().trim() || bulkLoading()"
+      >
+        {{ bulkLoading() ? 'Creando...' : 'Crear QRs' }}
+      </button>
+    </div>
+    @if (bulkSuccess()) {
+      <p class="success">{{ bulkSuccess() }}</p>
+    }
+  </section>
+
+  <section class="list-section">
+    <h2>Listado de QRs</h2>
+    @if (loading()) {
+      <p class="loading">Cargando...</p>
+    } @else if (error()) {
+      <p class="error">{{ error() }}</p>
+    } @else {
+      <div class="table-wrap">
+        <table class="qr-table">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Estado</th>
+              <th>Asignado a</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (qr of qrs(); track qr.id) {
+              <tr>
+                <td>{{ qr.code }}</td>
+                <td>
+                  <span class="badge" [class.badge-disponible]="qr.status === 'DISPONIBLE'" [class.badge-asignado]="qr.status === 'ASIGNADO'">
+                    {{ qr.status }}
+                  </span>
+                </td>
+                <td>
+                  @if (qr.student) {
+                    {{ qr.student.firstName }} {{ qr.student.lastName }}
+                  } @else {
+                    —
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      @if (qrs().length === 0) {
+        <p class="empty">No hay QRs registrados. Carga códigos arriba.</p>
+      }
+    }
+  </section>
+</div>

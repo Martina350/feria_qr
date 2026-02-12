@@ -1,36 +1,74 @@
 .page {
   max-width: 1100px;
-  margin: 2rem auto;
-  padding: 1.5rem;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.page-header h1 {
+  font-size: 1.35rem;
+  margin: 0;
+  color: #0f172a;
+}
+
+.export-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #0ea5e9;
+  background: transparent;
+  color: #0ea5e9;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.export-btn:hover:not(:disabled) {
+  background: #e0f2fe;
+}
+
+.export-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
 }
 
 .page h1 {
-  font-size: 1.6rem;
-  margin-bottom: 1.5rem;
+  font-size: 1.35rem;
+  margin-bottom: 1.25rem;
+  color: #0f172a;
 }
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: 1fr;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .card {
   padding: 1rem;
   border-radius: 0.75rem;
   background: #ffffff;
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08);
 }
 
 .card h2 {
-  font-size: 1rem;
+  font-size: 0.95rem;
   margin-bottom: 0.5rem;
+  color: #334155;
 }
 
 .card .big {
   font-size: 2rem;
   font-weight: 700;
+  color: #0f172a;
 }
 
 .card ul {
@@ -43,30 +81,33 @@
   display: flex;
   justify-content: space-between;
   font-size: 0.9rem;
-  padding: 0.15rem 0;
+  padding: 0.35rem 0;
 }
 
 .table-section {
   background: #ffffff;
   border-radius: 0.75rem;
   padding: 1rem;
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08);
+  overflow-x: auto;
 }
 
 .table-section h2 {
-  font-size: 1rem;
+  font-size: 0.95rem;
   margin-bottom: 0.75rem;
+  color: #334155;
 }
 
 table {
   width: 100%;
+  min-width: 280px;
   border-collapse: collapse;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 
 th,
 td {
-  padding: 0.5rem 0.75rem;
+  padding: 0.6rem 0.75rem;
   border-bottom: 1px solid #e5e7eb;
 }
 
@@ -77,6 +118,27 @@ th {
 
 .error {
   color: #b91c1c;
+}
+
+@media (min-width: 480px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .page {
+    padding: 1.5rem 0;
+  }
+
+  .page h1 {
+    font-size: 1.5rem;
+  }
+
+  .cards {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    margin-bottom: 2rem;
+  }
 }
 
 

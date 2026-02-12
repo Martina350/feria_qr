@@ -21,6 +21,13 @@ export class QrsController {
   async getAvailable() {
     return this.qrsService.findAvailable();
   }
+
+  @Get()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async findAll() {
+    return this.qrsService.findAll();
+  }
 }
 
 

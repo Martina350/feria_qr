@@ -1,0 +1,127 @@
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+.page h1 {
+  font-size: 1.35rem;
+  margin-bottom: 0.5rem;
+}
+
+.intro {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.bulk-section {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08);
+}
+
+.bulk-section h2 {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.bulk-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+.bulk-form textarea {
+  margin-top: 0.25rem;
+  padding: 0.6rem;
+  border-radius: 0.5rem;
+  border: 1px solid #cbd5e1;
+  font-size: 0.9rem;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.bulk-form button {
+  align-self: flex-start;
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.bulk-form button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.list-section h2 {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+}
+
+.qr-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.qr-table th,
+.qr-table td {
+  padding: 0.6rem 1rem;
+  text-align: left;
+}
+
+.qr-table th {
+  background: #f8fafc;
+  font-weight: 600;
+}
+
+.qr-table tbody tr {
+  border-top: 1px solid #e2e8f0;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.badge-disponible {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.badge-asignado {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.loading,
+.empty {
+  color: #64748b;
+  font-style: italic;
+}
+
+.success {
+  color: #15803d;
+  margin-top: 0.5rem;
+}
+
+.error {
+  color: #b91c1c;
+}

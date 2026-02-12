@@ -18,12 +18,11 @@ let StudentsService = class StudentsService {
         this.prisma = prisma;
     }
     async registerStudent(input) {
-        const qr = await this.prisma.qRCode.findUnique({
-            where: { id: input.qrCodeId },
-        });
+        const qr = await this.findQrByIdOrCode(input.qrCodeId);
         if (!qr || qr.status !== 'DISPONIBLE') {
             throw new common_1.BadRequestException('QR no disponible para asignación');
         }
+        const qrId = qr.id;
         const student = await this.prisma.student.create({
             data: {
                 firstName: input.firstName,
@@ -33,17 +32,23 @@ let StudentsService = class StudentsService {
                 unitEducation: input.unitEducation,
                 city: input.city,
                 province: input.province,
-                qrCodeId: input.qrCodeId,
+                qrCodeId: qrId,
             },
         });
         await this.prisma.qRCode.update({
-            where: { id: input.qrCodeId },
+            where: { id: qrId },
             data: {
                 status: 'ASIGNADO',
                 assignedAt: new Date(),
             },
         });
         return student;
+    }
+    async findQrByIdOrCode(idOrCode) {
+        const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idOrCode);
+        return this.prisma.qRCode.findFirst({
+            where: isUuid ? { id: idOrCode } : { code: idOrCode },
+        });
     }
     async getCompletionStatus(studentId) {
         const student = await this.prisma.student.findUnique({

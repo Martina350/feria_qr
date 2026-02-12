@@ -54,6 +54,20 @@ async function seedAdmin(prisma) {
         },
     });
 }
+async function seedStands(prisma) {
+    const count = await prisma.stand.count();
+    if (count > 0)
+        return;
+    const stands = [
+        { name: 'Stand Ahorro', cooperativeName: 'Cooperativa Ahorro', contentType: client_1.ContentType.AHORRO, isMandatory: true },
+        { name: 'Stand Fraude', cooperativeName: 'Cooperativa Fraude', contentType: client_1.ContentType.FRAUDE, isMandatory: true },
+        { name: 'Stand Crédito', cooperativeName: 'Cooperativa Crédito', contentType: client_1.ContentType.CREDITO, isMandatory: false },
+        { name: 'Stand Presupuesto', cooperativeName: 'Cooperativa Presupuesto', contentType: client_1.ContentType.PRESUPUESTO, isMandatory: false },
+        { name: 'Stand Inversión', cooperativeName: 'Cooperativa Inversión', contentType: client_1.ContentType.INVERSION, isMandatory: false },
+        { name: 'Stand Seguros', cooperativeName: 'Cooperativa Seguros', contentType: client_1.ContentType.SEGUROS, isMandatory: false },
+    ];
+    await prisma.stand.createMany({ data: stands });
+}
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors({
@@ -62,6 +76,7 @@ async function bootstrap() {
     });
     const prisma = app.get(prisma_service_1.PrismaService);
     await seedAdmin(prisma);
+    await seedStands(prisma);
     await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

@@ -11,12 +11,13 @@ export declare class AuthController {
     register(body: {
         email: string;
         password: string;
+        standId?: string | null;
     }): Promise<{
         id: string;
         email: string;
         role: import("@prisma/client").$Enums.Role;
+        standId: string | null;
         createdAt: Date;
         updatedAt: Date;
-        standId: string | null;
     }>;
 }

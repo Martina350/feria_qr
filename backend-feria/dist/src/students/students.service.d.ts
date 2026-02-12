@@ -13,6 +13,8 @@ export declare class StudentsService {
         qrCodeId: string;
     }): Promise<{
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         firstName: string;
         lastName: string;
         age: number;
@@ -20,12 +22,11 @@ export declare class StudentsService {
         unitEducation: string;
         city: string;
         province: string;
+        qrCodeId: string;
         isCompleted: boolean;
         completedAt: Date | null;
-        createdAt: Date;
-        updatedAt: Date;
-        qrCodeId: string;
     }>;
+    private findQrByIdOrCode;
     getCompletionStatus(studentId: string): Promise<{
         id: string;
         firstName: string;

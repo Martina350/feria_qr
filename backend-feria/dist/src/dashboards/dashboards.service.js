@@ -143,6 +143,56 @@ let DashboardsService = class DashboardsService {
         const [result] = await this.getStandsDashboard().then((all) => all.filter((s) => s.id === standId));
         return result ?? { ...stand, metrics: null };
     }
+    async exportData() {
+        const students = await this.prisma.student.findMany({
+            include: {
+                qrCode: { select: { code: true } },
+                activities: {
+                    include: {
+                        stand: { select: { name: true, cooperativeName: true, contentType: true } },
+                    },
+                },
+            },
+            orderBy: { createdAt: 'desc' },
+        });
+        const rows = [
+            [
+                'Nombre',
+                'Apellido',
+                'Edad',
+                'Género',
+                'Unidad Educativa',
+                'Ciudad',
+                'Provincia',
+                'Código QR',
+                'Completado',
+                'Fecha Completado',
+                'Actividades Realizadas',
+            ],
+        ];
+        for (const s of students) {
+            const activitiesDesc = s.activities
+                .map((a) => `${a.stand.cooperativeName} - ${a.stand.contentType}`)
+                .join('; ');
+            rows.push([
+                s.firstName,
+                s.lastName,
+                String(s.age),
+                s.gender,
+                s.unitEducation,
+                s.city,
+                s.province,
+                s.qrCode.code,
+                s.isCompleted ? 'Sí' : 'No',
+                s.completedAt ? s.completedAt.toISOString() : '',
+                activitiesDesc,
+            ]);
+        }
+        const csv = rows
+            .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+            .join('\n');
+        return { csv };
+    }
 };
 exports.DashboardsService = DashboardsService;
 exports.DashboardsService = DashboardsService = __decorate([

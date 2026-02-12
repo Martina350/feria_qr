@@ -17,6 +17,10 @@ export class DashboardService {
   getMyStandDashboard() {
     return this.http.get(`${API_BASE_URL}/dashboard/my-stand`);
   }
+
+  exportData() {
+    return this.http.get<{ csv: string }>(`${API_BASE_URL}/dashboard/export`);
+  }
 }
 
 

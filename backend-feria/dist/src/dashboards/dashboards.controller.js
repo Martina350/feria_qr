@@ -32,6 +32,9 @@ let DashboardsController = class DashboardsController {
     async getMyStand(req) {
         return this.dashboardsService.getMyStandDashboard(req.user.standId ?? '');
     }
+    async export() {
+        return this.dashboardsService.exportData();
+    }
 };
 exports.DashboardsController = DashboardsController;
 __decorate([
@@ -59,6 +62,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], DashboardsController.prototype, "getMyStand", null);
+__decorate([
+    (0, common_1.Get)('export'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('ADMIN'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], DashboardsController.prototype, "export", null);
 exports.DashboardsController = DashboardsController = __decorate([
     (0, common_1.Controller)('dashboard'),
     __metadata("design:paramtypes", [dashboards_service_1.DashboardsService])

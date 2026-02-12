@@ -48,8 +48,13 @@
     </div>
 
     <label>
-      QR asignado (ID o código interno)
-      <input type="text" formControlName="qrCodeId" />
+      QR asignado
+      <select formControlName="qrCodeId">
+        <option value="">Selecciona un QR disponible</option>
+        @for (qr of availableQrs(); track qr.id) {
+          <option [value]="qr.id">{{ qr.code }}</option>
+        }
+      </select>
     </label>
 
     <button type="submit" [disabled]="form.invalid || loading()">

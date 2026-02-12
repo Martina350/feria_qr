@@ -18,13 +18,14 @@ export class AuthController {
     body: {
       email: string;
       password: string;
+      standId?: string | null;
     },
   ) {
     return this.authService.register({
       email: body.email,
       password: body.password,
       role: undefined,
-      standId: undefined,
+      standId: body.standId ?? null,
     });
   }
 }

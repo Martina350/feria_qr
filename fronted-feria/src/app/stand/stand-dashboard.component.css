@@ -1,43 +1,26 @@
 .page {
-  max-width: 1100px;
+  max-width: 600px;
   margin: 0 auto;
-  padding: 1rem 0;
+  padding: 1rem;
 }
 
 .page h1 {
   font-size: 1.35rem;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.25rem;
   color: #0f172a;
 }
 
-.stands-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
+.subtitle {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-bottom: 1.25rem;
 }
 
 .stand-card {
-  background: #ffffff;
+  background: #fff;
   border-radius: 0.75rem;
   padding: 1rem;
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
-}
-
-.stand-card header h2 {
-  font-size: 1.1rem;
-  margin: 0 0 0.25rem 0;
-}
-
-.cooperative {
-  margin: 0;
-  font-size: 0.9rem;
-  color: #4b5563;
-}
-
-.content-type {
-  margin: 0.25rem 0 0.75rem 0;
-  font-size: 0.85rem;
-  color: #6b7280;
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08);
 }
 
 .total {
@@ -84,17 +67,3 @@ li {
     grid-template-columns: 1fr;
   }
 }
-
-@media (min-width: 640px) {
-  .stands-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 900px) {
-  .stands-grid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  }
-}
-
-

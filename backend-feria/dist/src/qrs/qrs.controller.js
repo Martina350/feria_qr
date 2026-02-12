@@ -29,6 +29,9 @@ let QrsController = class QrsController {
     async getAvailable() {
         return this.qrsService.findAvailable();
     }
+    async findAll() {
+        return this.qrsService.findAll();
+    }
 };
 exports.QrsController = QrsController;
 __decorate([
@@ -48,6 +51,14 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], QrsController.prototype, "getAvailable", null);
+__decorate([
+    (0, common_1.Get)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('ADMIN'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], QrsController.prototype, "findAll", null);
 exports.QrsController = QrsController = __decorate([
     (0, common_1.Controller)('qrs'),
     __metadata("design:paramtypes", [qrs_service_1.QrsService])

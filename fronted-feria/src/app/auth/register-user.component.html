@@ -17,6 +17,16 @@
       <input type="password" formControlName="confirmPassword" placeholder="Repite la contraseña" />
     </label>
 
+    <label>
+      Cooperativa / Stand
+      <select formControlName="standId">
+        <option value="">Selecciona tu cooperativa o stand</option>
+        @for (s of stands(); track s.id) {
+          <option [value]="s.id">{{ s.cooperativeName }} - {{ s.name }}</option>
+        }
+      </select>
+    </label>
+
     <button type="submit" [disabled]="form.invalid || loading()">
       {{ loading() ? 'Creando usuario...' : 'Registrar usuario' }}
     </button>

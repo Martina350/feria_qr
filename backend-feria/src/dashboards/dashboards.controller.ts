@@ -29,6 +29,13 @@ export class DashboardsController {
   async getMyStand(@Req() req: { user: JwtPayload }) {
     return this.dashboardsService.getMyStandDashboard(req.user.standId ?? '');
   }
+
+  @Get('export')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async export() {
+    return this.dashboardsService.exportData();
+  }
 }
 
 

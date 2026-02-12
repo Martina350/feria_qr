@@ -17,12 +17,7 @@ export class ActivitiesService {
       | 'SEGUROS';
     completedBy?: string;
   }) {
-    const qr = await this.prisma.qRCode.findUnique({
-      where: { id: input.qrCodeId },
-      include: {
-        student: true,
-      },
-    });
+    const qr = await this.findQrByIdOrCode(input.qrCodeId);
 
     if (!qr || qr.status !== 'ASIGNADO' || !qr.student) {
       throw new BadRequestException('QR no válido o no asignado a estudiante');
@@ -47,6 +42,14 @@ export class ActivitiesService {
     await this.evaluateCompletion(studentId);
 
     return { success: true };
+  }
+
+  private async findQrByIdOrCode(idOrCode: string) {
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idOrCode);
+    return this.prisma.qRCode.findFirst({
+      where: isUuid ? { id: idOrCode } : { code: idOrCode },
+      include: { student: true },
+    });
   }
 
   private async evaluateCompletion(studentId: string) {

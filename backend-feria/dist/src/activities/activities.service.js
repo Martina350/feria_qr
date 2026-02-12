@@ -18,12 +18,7 @@ let ActivitiesService = class ActivitiesService {
         this.prisma = prisma;
     }
     async completeActivity(input) {
-        const qr = await this.prisma.qRCode.findUnique({
-            where: { id: input.qrCodeId },
-            include: {
-                student: true,
-            },
-        });
+        const qr = await this.findQrByIdOrCode(input.qrCodeId);
         if (!qr || qr.status !== 'ASIGNADO' || !qr.student) {
             throw new common_1.BadRequestException('QR no válido o no asignado a estudiante');
         }
@@ -41,6 +36,13 @@ let ActivitiesService = class ActivitiesService {
         });
         await this.evaluateCompletion(studentId);
         return { success: true };
+    }
+    async findQrByIdOrCode(idOrCode) {
+        const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idOrCode);
+        return this.prisma.qRCode.findFirst({
+            where: isUuid ? { id: idOrCode } : { code: idOrCode },
+            include: { student: true },
+        });
     }
     async evaluateCompletion(studentId) {
         const mandatoryStands = await this.prisma.stand.findMany({

@@ -1,8 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../core/auth.service';
+import { StandService, Stand } from '../core/stand.service';
 
 @Component({
   selector: 'app-register-user',
@@ -11,20 +12,30 @@ import { AuthService } from '../core/auth.service';
   templateUrl: './register-user.component.html',
   styleUrls: ['./register-user.component.css'],
 })
-export class RegisterUserComponent {
+export class RegisterUserComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly auth = inject(AuthService);
+  private readonly standService = inject(StandService);
   private readonly router = inject(Router);
 
   loading = signal(false);
   error = signal<string | null>(null);
   success = signal<string | null>(null);
+  stands = signal<Stand[]>([]);
 
   form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
+    standId: ['', Validators.required],
   });
+
+  ngOnInit() {
+    this.standService.getAll().subscribe({
+      next: (list) => this.stands.set(list),
+      error: () => this.stands.set([]),
+    });
+  }
 
   submit() {
     if (this.form.invalid || this.loading()) {
@@ -35,7 +46,7 @@ export class RegisterUserComponent {
     this.error.set(null);
     this.success.set(null);
 
-    const { email, password, confirmPassword } = this.form.getRawValue();
+    const { email, password, confirmPassword, standId } = this.form.getRawValue();
 
     if (password !== confirmPassword) {
       this.loading.set(false);
@@ -44,7 +55,7 @@ export class RegisterUserComponent {
     }
 
     this.auth
-      .registerUser(email ?? '', password ?? '')
+      .registerUser(email ?? '', password ?? '', standId || null)
       .subscribe({
         next: () => {
           this.loading.set(false);

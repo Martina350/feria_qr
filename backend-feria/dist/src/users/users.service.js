@@ -17,6 +17,41 @@ let UsersService = class UsersService {
     constructor(prisma) {
         this.prisma = prisma;
     }
+    async findAll() {
+        const users = await this.prisma.user.findMany({
+            select: {
+                id: true,
+                email: true,
+                role: true,
+                standId: true,
+                createdAt: true,
+                stand: {
+                    select: { id: true, name: true, cooperativeName: true },
+                },
+            },
+        });
+        return users;
+    }
+    async updateRole(id, role) {
+        const user = await this.prisma.user.findUnique({ where: { id } });
+        if (!user) {
+            throw new common_1.BadRequestException('Usuario no encontrado');
+        }
+        await this.prisma.user.update({
+            where: { id },
+            data: { role },
+        });
+        const updated = await this.prisma.user.findUnique({
+            where: { id },
+            select: {
+                id: true,
+                email: true,
+                role: true,
+                standId: true,
+            },
+        });
+        return updated;
+    }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([

@@ -1,0 +1,52 @@
+<div class="page">
+  <h1>Gestión de usuarios</h1>
+  <p class="intro">Lista de cooperativas registradas y administradores. Solo los administradores pueden ver y editar roles.</p>
+
+  @if (loading()) {
+    <p class="loading">Cargando usuarios…</p>
+  } @else if (error()) {
+    <p class="error">{{ error() }}</p>
+  } @else {
+    <div class="table-wrap">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Cooperativa / Stand</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of users(); track user.id) {
+            <tr>
+              <td>{{ user.email }}</td>
+              <td>{{ user.stand?.cooperativeName ?? user.stand?.name ?? '—' }}</td>
+              <td>
+                <span class="badge" [class.badge-admin]="user.role === 'ADMIN'" [class.badge-coop]="user.role === 'COOPERATIVA'">
+                  {{ user.role === 'ADMIN' ? 'Administrador' : 'Cooperativa' }}
+                </span>
+              </td>
+              <td>
+                @if (updatingId() === user.id) {
+                  <span class="updating">Guardando…</span>
+                } @else {
+                  <select
+                    [value]="user.role"
+                    (change)="changeRole(user, $any($event.target).value)"
+                  >
+                    <option value="COOPERATIVA">Cooperativa</option>
+                    <option value="ADMIN">Administrador</option>
+                  </select>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    @if (users().length === 0) {
+      <p class="empty">No hay usuarios registrados.</p>
+    }
+  }
+</div>

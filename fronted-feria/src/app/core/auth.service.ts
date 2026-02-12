@@ -9,14 +9,23 @@ interface LoginResponse {
   accessToken: string;
 }
 
+interface JwtPayload {
+  sub: string;
+  email: string;
+  role: UserRole;
+  standId?: string | null;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly tokenKey = 'auth_token';
   readonly isAuthenticated = signal<boolean>(false);
+  readonly userRole = signal<UserRole | null>(null);
 
   constructor(private readonly http: HttpClient) {
     const token = this.getToken();
     this.isAuthenticated.set(!!token);
+    if (token) this.updateRoleFromToken(token);
   }
 
   login(email: string, password: string) {
@@ -32,16 +41,18 @@ export class AuthService {
       );
   }
 
-  registerUser(email: string, password: string) {
+  registerUser(email: string, password: string, standId?: string | null) {
     return this.http.post(`${API_BASE_URL}/auth/register`, {
       email,
       password,
+      standId: standId ?? null,
     });
   }
 
   logout() {
     this.clearToken();
     this.isAuthenticated.set(false);
+    this.userRole.set(null);
   }
 
   getToken(): string | null {
@@ -51,10 +62,22 @@ export class AuthService {
   private setToken(token: string) {
     localStorage.setItem(this.tokenKey, token);
     this.isAuthenticated.set(true);
+    this.updateRoleFromToken(token);
   }
 
   private clearToken() {
     localStorage.removeItem(this.tokenKey);
+  }
+
+  private updateRoleFromToken(token: string) {
+    try {
+      const payload = JSON.parse(
+        atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))
+      ) as JwtPayload;
+      this.userRole.set(payload.role ?? null);
+    } catch {
+      this.userRole.set(null);
+    }
   }
 }
 

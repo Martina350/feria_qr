@@ -31,9 +31,23 @@ let QrsService = class QrsService {
     async findAvailable() {
         const qrs = await this.prisma.qRCode.findMany({
             where: { status: 'DISPONIBLE' },
-            orderBy: { createdAt: 'asc' },
+            orderBy: { code: 'asc' },
         });
         return qrs;
+    }
+    async findAll() {
+        return this.prisma.qRCode.findMany({
+            orderBy: { code: 'asc' },
+            include: {
+                student: {
+                    select: {
+                        id: true,
+                        firstName: true,
+                        lastName: true,
+                    },
+                },
+            },
+        });
     }
 };
 exports.QrsService = QrsService;

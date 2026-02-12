@@ -28,7 +28,7 @@ let AuthController = class AuthController {
             email: body.email,
             password: body.password,
             role: undefined,
-            standId: undefined,
+            standId: body.standId ?? null,
         });
     }
 };

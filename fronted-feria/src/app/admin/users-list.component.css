@@ -1,0 +1,101 @@
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+.page h1 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.intro {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.loading {
+  color: #64748b;
+  font-style: italic;
+}
+
+.error {
+  color: #b91c1c;
+  font-size: 0.95rem;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.users-table th,
+.users-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.users-table th {
+  background: #f8fafc;
+  font-weight: 600;
+  color: #334155;
+}
+
+.users-table tbody tr {
+  border-top: 1px solid #e2e8f0;
+}
+
+.users-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.badge-admin {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.badge-coop {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.users-table select {
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.5rem;
+  border: 1px solid #cbd5e1;
+  font-size: 0.85rem;
+  background: white;
+  cursor: pointer;
+}
+
+.users-table select:hover {
+  border-color: #94a3b8;
+}
+
+.updating {
+  color: #64748b;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.empty {
+  color: #64748b;
+  font-style: italic;
+  margin-top: 1rem;
+}

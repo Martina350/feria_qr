@@ -17,6 +17,30 @@ let StandsService = class StandsService {
     constructor(prisma) {
         this.prisma = prisma;
     }
+    async findAll() {
+        return this.prisma.stand.findMany({
+            orderBy: { cooperativeName: 'asc' },
+        });
+    }
+    async create(input) {
+        return this.prisma.stand.create({
+            data: {
+                name: input.name,
+                cooperativeName: input.cooperativeName,
+                contentType: input.contentType,
+                isMandatory: input.isMandatory ?? false,
+            },
+        });
+    }
+    async findById(id) {
+        const stand = await this.prisma.stand.findUnique({
+            where: { id },
+        });
+        if (!stand) {
+            throw new common_1.BadRequestException('Stand no encontrado');
+        }
+        return stand;
+    }
 };
 exports.StandsService = StandsService;
 exports.StandsService = StandsService = __decorate([

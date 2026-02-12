@@ -1,7 +1,7 @@
 .auth-container {
   max-width: 400px;
-  margin: 3rem auto;
-  padding: 2rem;
+  margin: 1.5rem auto;
+  padding: 1.5rem;
   border-radius: 1rem;
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
   background: #ffffff;
@@ -29,10 +29,10 @@ label {
 
 input {
   margin-top: 0.25rem;
-  padding: 0.5rem 0.75rem;
+  padding: 0.6rem 0.75rem;
   border-radius: 0.5rem;
   border: 1px solid #cbd5f5;
-  font-size: 0.95rem;
+  font-size: 16px; /* Evita zoom en iOS al enfocar */
 }
 
 button {

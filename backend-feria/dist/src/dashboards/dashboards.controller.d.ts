@@ -38,4 +38,7 @@ export declare class DashboardsController {
         cooperativeName: string;
         contentType: import("@prisma/client").$Enums.ContentType;
     } | null>;
+    export(): Promise<{
+        csv: string;
+    }>;
 }

@@ -1,5 +1,10 @@
 <div class="page" *ngIf="data() as d; else loadingOrError">
-  <h1>Dashboard de ingresos</h1>
+  <div class="page-header">
+    <h1>Dashboard de ingresos</h1>
+    <button type="button" class="export-btn" (click)="exportCsv()" [disabled]="exporting()">
+      {{ exporting() ? 'Exportando...' : 'Exportar CSV' }}
+    </button>
+  </div>
 
   <section class="cards">
     <article class="card">

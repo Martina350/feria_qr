@@ -10,5 +10,6 @@ export declare class ActivitiesService {
     }): Promise<{
         success: boolean;
     }>;
+    private findQrByIdOrCode;
     private evaluateCompletion;
 }

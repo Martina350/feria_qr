@@ -1,18 +1,43 @@
-
 @if (isAuthenticated()) {
+  @if (menuOpen()) {
+    <div class="nav-backdrop" (click)="closeMenu()" role="button" tabindex="0" (keydown.enter)="closeMenu()" aria-label="Cerrar menú"></div>
+  }
   <nav class="top-nav">
-    <div class="logo">
-      <span class="brand">Michi Money</span>
-      <span class="subtitle">Cartilla Digital</span>
+    <div class="nav-header">
+      <div class="logo">
+        <span class="brand">Michi Money</span>
+        <span class="subtitle">Cartilla Digital</span>
+      </div>
+      <div class="nav-header-right">
+        <button
+          type="button"
+          class="hamburger"
+          [class.open]="menuOpen()"
+          (click)="toggleMenu()"
+          aria-label="Abrir menú"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
     </div>
-    <ul class="nav-links">
-      <li><a routerLink="/admin/register-student" routerLinkActive="active">Estudiantes</a></li>
-      <li><a routerLink="/stand/scan-qr" routerLinkActive="active">Registro stand</a></li>
-      <li><a routerLink="/dashboard/entries" routerLinkActive="active">Dashboard ingresos</a></li>
-      <li><a routerLink="/dashboard/stands" routerLinkActive="active">Dashboard stands</a></li>
-    </ul>
-    <div class="nav-actions">
-      <button type="button" class="logout-link" (click)="logout()">Salir</button>
+    <div class="nav-menu" [class.open]="menuOpen()">
+      <ul class="nav-links">
+        <li><a routerLink="/dashboard/entries" routerLinkActive="active" (click)="closeMenu()">Dashboard ingresos</a></li>
+        <li><a routerLink="/dashboard/stands" routerLinkActive="active" (click)="closeMenu()">Dashboard stands</a></li>
+        @if (userRole() === 'ADMIN') {
+          <li><a routerLink="/admin/users" routerLinkActive="active" (click)="closeMenu()">Usuarios</a></li>
+          <li><a routerLink="/admin/qr-management" routerLinkActive="active" (click)="closeMenu()">QRs</a></li>
+        }
+        <li><a routerLink="/stand/scan-qr" routerLinkActive="active" (click)="closeMenu()">Registro stand</a></li>
+        @if (userRole() === 'COOPERATIVA') {
+          <li><a routerLink="/stand/dashboard" routerLinkActive="active" (click)="closeMenu()">Mi stand</a></li>
+        }
+        <li><a routerLink="/admin/register-student" routerLinkActive="active" (click)="closeMenu()">Estudiantes</a></li>
+      </ul>
+      <button type="button" class="logout-link logout-mobile" (click)="logout()">Salir</button>
+      <button type="button" class="logout-link logout-desktop" (click)="logout()">Salir</button>
     </div>
   </nav>
 }

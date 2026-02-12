@@ -1,7 +1,7 @@
 .page {
   max-width: 800px;
-  margin: 2rem auto;
-  padding: 1.5rem;
+  margin: 0 auto;
+  padding: 1rem;
 }
 
 .page h1 {
@@ -30,10 +30,10 @@ label {
 input,
 select {
   margin-top: 0.25rem;
-  padding: 0.5rem 0.75rem;
+  padding: 0.6rem 0.75rem;
   border-radius: 0.5rem;
   border: 1px solid #cbd5f5;
-  font-size: 0.95rem;
+  font-size: 16px; /* Evita zoom en iOS al enfocar */
 }
 
 button {

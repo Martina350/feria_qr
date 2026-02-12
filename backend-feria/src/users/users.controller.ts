@@ -24,6 +24,16 @@ export class UsersController {
   ) {
     return this.usersService.updateRole(id, body.role as any);
   }
+
+  @Patch(':id/stand')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async updateStand(
+    @Param('id') id: string,
+    @Body() body: { standId: string | null },
+  ) {
+    return this.usersService.updateStand(id, body.standId);
+  }
 }
 
 

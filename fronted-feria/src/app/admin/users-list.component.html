@@ -21,7 +21,25 @@
           @for (user of users(); track user.id) {
             <tr>
               <td>{{ user.email }}</td>
-              <td>{{ user.stand?.cooperativeName ?? user.stand?.name ?? '—' }}</td>
+              <td>
+                @if (user.role === 'COOPERATIVA') {
+                  @if (updatingId() === user.id) {
+                    <span class="updating">Guardando…</span>
+                  } @else {
+                    <select
+                      [value]="user.standId ?? ''"
+                      (change)="changeStand(user, $any($event.target).value)"
+                    >
+                      <option value="">Sin asignar</option>
+                      @for (s of stands(); track s.id) {
+                        <option [value]="s.id">{{ s.cooperativeName }} - {{ s.name }}</option>
+                      }
+                    </select>
+                  }
+                } @else {
+                  {{ user.stand?.cooperativeName ?? user.stand?.name ?? '—' }}
+                }
+              </td>
               <td>
                 <span class="badge" [class.badge-admin]="user.role === 'ADMIN'" [class.badge-coop]="user.role === 'COOPERATIVA'">
                   {{ user.role === 'ADMIN' ? 'Administrador' : 'Cooperativa' }}

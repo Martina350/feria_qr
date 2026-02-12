@@ -29,6 +29,9 @@ let UsersController = class UsersController {
     async updateRole(id, body) {
         return this.usersService.updateRole(id, body.role);
     }
+    async updateStand(id, body) {
+        return this.usersService.updateStand(id, body.standId);
+    }
 };
 exports.UsersController = UsersController;
 __decorate([
@@ -49,6 +52,16 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "updateRole", null);
+__decorate([
+    (0, common_1.Patch)(':id/stand'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+    (0, roles_decorator_1.Roles)('ADMIN'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "updateStand", null);
 exports.UsersController = UsersController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [users_service_1.UsersService])

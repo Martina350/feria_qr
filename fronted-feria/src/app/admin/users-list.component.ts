@@ -1,7 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { UserService, UserListItem, UserRole } from '../core/user.service';
+import { StandService, Stand } from '../core/stand.service';
 import { AuthService } from '../core/auth.service';
 
 @Component({
@@ -11,15 +12,24 @@ import { AuthService } from '../core/auth.service';
   templateUrl: './users-list.component.html',
   styleUrls: ['./users-list.component.css'],
 })
-export class UsersListComponent {
+export class UsersListComponent implements OnInit {
   private readonly userService = inject(UserService);
+  private readonly standService = inject(StandService);
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
 
   users = signal<UserListItem[]>([]);
+  stands = signal<Stand[]>([]);
   loading = signal(true);
   error = signal<string | null>(null);
   updatingId = signal<string | null>(null);
+
+  ngOnInit() {
+    this.standService.getAll().subscribe({
+      next: (list) => this.stands.set(list),
+      error: () => this.stands.set([]),
+    });
+  }
 
   constructor() {
     if (!this.auth.isAuthenticated()) {
@@ -63,6 +73,26 @@ export class UsersListComponent {
       error: (err) => {
         this.error.set(
           err?.error?.message ?? 'No se pudo actualizar el rol.'
+        );
+        this.updatingId.set(null);
+      },
+    });
+  }
+
+  changeStand(user: UserListItem, standId: string) {
+    const newStandId = standId || null;
+    if (user.standId === newStandId) return;
+    this.updatingId.set(user.id);
+    this.userService.updateUserStand(user.id, newStandId).subscribe({
+      next: (updated) => {
+        this.users.update((list) =>
+          list.map((u) => (u.id === user.id ? { ...u, standId: updated.standId, stand: updated.stand } : u))
+        );
+        this.updatingId.set(null);
+      },
+      error: (err) => {
+        this.error.set(
+          err?.error?.message ?? 'No se pudo actualizar el stand.'
         );
         this.updatingId.set(null);
       },

@@ -41,16 +41,36 @@ let UsersService = class UsersService {
             where: { id },
             data: { role },
         });
-        const updated = await this.prisma.user.findUnique({
+        return this.findUserById(id);
+    }
+    async updateStand(id, standId) {
+        const user = await this.prisma.user.findUnique({ where: { id } });
+        if (!user) {
+            throw new common_1.BadRequestException('Usuario no encontrado');
+        }
+        if (standId) {
+            const stand = await this.prisma.stand.findUnique({ where: { id: standId } });
+            if (!stand) {
+                throw new common_1.BadRequestException('Stand no encontrado');
+            }
+        }
+        await this.prisma.user.update({
+            where: { id },
+            data: { standId },
+        });
+        return this.findUserById(id);
+    }
+    findUserById(id) {
+        return this.prisma.user.findUnique({
             where: { id },
             select: {
                 id: true,
                 email: true,
                 role: true,
                 standId: true,
+                stand: { select: { id: true, name: true, cooperativeName: true } },
             },
         });
-        return updated;
     }
 };
 exports.UsersService = UsersService;

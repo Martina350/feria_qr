@@ -31,4 +31,10 @@ export class UserService {
       role,
     });
   }
+
+  updateUserStand(id: string, standId: string | null): Observable<UserListItem> {
+    return this.http.patch<UserListItem>(`${API_BASE_URL}/users/${id}/stand`, {
+      standId,
+    });
+  }
 }

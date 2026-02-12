@@ -48,9 +48,13 @@ export class StandDashboardComponent {
     this.dashboards.getMyStandDashboard().subscribe({
       next: (res) => {
         this.loading.set(false);
-        this.data.set(res as StandMetric);
+        if (res) {
+          this.data.set(res as StandMetric);
+        } else {
+          this.error.set('No tienes un stand asignado. Un administrador puede asignarte uno en la sección Usuarios. Después cierra sesión y vuelve a iniciar sesión.');
+        }
       },
-      error: (err) => {
+      error: () => {
         this.loading.set(false);
         this.error.set('No se pudieron cargar las métricas de tu stand.');
       },

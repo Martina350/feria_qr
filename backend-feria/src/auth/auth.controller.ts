@@ -11,23 +11,6 @@ export class AuthController {
   ): Promise<{ accessToken: string }> {
     return this.authService.login(body.email, body.password);
   }
-
-  @Post('register')
-  async register(
-    @Body()
-    body: {
-      email: string;
-      password: string;
-      standId?: string | null;
-    },
-  ) {
-    return this.authService.register({
-      email: body.email,
-      password: body.password,
-      role: undefined,
-      standId: body.standId ?? null,
-    });
-  }
 }
 
 

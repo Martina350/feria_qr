@@ -23,34 +23,59 @@
   box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08);
 }
 
-.total {
-  font-size: 0.95rem;
-  margin-bottom: 0.75rem;
+.total-card {
+  padding: 1rem;
+  background: #f0f9ff;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
 
-.mini-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
+.total-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #0369a1;
+  margin: 0.25rem 0 0 0;
+}
+
+.chart-section {
+  margin-bottom: 1.5rem;
+}
+
+.chart-section h3 {
+  font-size: 0.95rem;
   margin-bottom: 0.75rem;
+  color: #334155;
+}
+
+.chart-container {
+  position: relative;
+  max-width: 280px;
+  min-height: 220px;
+  margin: 0 auto;
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: 1rem 0.75rem;
+  }
+
+  .stand-card {
+    padding: 1rem 0.75rem;
+  }
+
+  .total-number {
+    font-size: 2rem;
+  }
+
+  .chart-container {
+    max-width: 100%;
+  }
 }
 
 h3 {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   margin-bottom: 0.25rem;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-li {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  padding: 0.1rem 0;
 }
 
 .muted {
@@ -62,8 +87,3 @@ li {
   color: #b91c1c;
 }
 
-@media (max-width: 480px) {
-  .mini-grid {
-    grid-template-columns: 1fr;
-  }
-}

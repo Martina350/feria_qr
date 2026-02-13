@@ -7,7 +7,7 @@ import { AuthService } from '../core/auth.service';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
@@ -37,7 +37,12 @@ export class LoginComponent {
     this.auth.login(email ?? '', password ?? '').subscribe({
       next: () => {
         this.loading.set(false);
-        this.router.navigateByUrl('/admin/register-student');
+        const role = this.auth.userRole();
+        if (role === 'COOPERATIVA') {
+          this.router.navigateByUrl('/stand/scan-qr');
+        } else {
+          this.router.navigateByUrl('/dashboard/entries');
+        }
       },
       error: (err) => {
         this.loading.set(false);

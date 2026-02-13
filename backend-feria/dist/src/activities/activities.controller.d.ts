@@ -5,8 +5,6 @@ export declare class ActivitiesController {
     constructor(activitiesService: ActivitiesService);
     complete(body: {
         qrCodeId: string;
-        standId: string;
-        contentType: 'AHORRO' | 'FRAUDE' | 'CREDITO' | 'PRESUPUESTO' | 'INVERSION' | 'SEGUROS';
     }, req: {
         user: JwtPayload;
     }): Promise<{

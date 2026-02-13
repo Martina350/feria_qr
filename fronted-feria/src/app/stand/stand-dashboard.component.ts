@@ -1,6 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { BaseChartDirective } from 'ng2-charts';
+import { ChartConfiguration } from 'chart.js';
 import { DashboardService } from '../core/dashboard.service';
 import { AuthService } from '../core/auth.service';
 
@@ -17,10 +19,16 @@ interface StandMetric {
   } | null;
 }
 
+const GENDER_LABELS: Record<string, string> = {
+  MALE: 'Masculino',
+  FEMALE: 'Femenino',
+  OTHER: 'Otro',
+};
+
 @Component({
   selector: 'app-stand-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, BaseChartDirective],
   templateUrl: './stand-dashboard.component.html',
   styleUrls: ['./stand-dashboard.component.css'],
 })
@@ -32,6 +40,15 @@ export class StandDashboardComponent {
   loading = signal(true);
   error = signal<string | null>(null);
   data = signal<StandMetric | null>(null);
+
+  genderChartData: ChartConfiguration<'pie'>['data'] = { labels: [], datasets: [] };
+  ageChartData: ChartConfiguration<'pie'>['data'] = { labels: [], datasets: [] };
+  chartOptions: ChartConfiguration<'pie'>['options'] = {
+    responsive: true,
+    plugins: {
+      legend: { position: 'bottom' },
+    },
+  };
 
   constructor() {
     if (this.auth.userRole() !== 'COOPERATIVA') {
@@ -49,7 +66,12 @@ export class StandDashboardComponent {
       next: (res) => {
         this.loading.set(false);
         if (res) {
-          this.data.set(res as StandMetric);
+          const d = res as StandMetric;
+          this.data.set(d);
+          if (d.metrics) {
+            this.genderChartData = this.buildGenderChartData(d.metrics.byGender);
+            this.ageChartData = this.buildAgeChartData(d.metrics.byAgeRange);
+          }
         } else {
           this.error.set('No tienes un stand asignado. Un administrador puede asignarte uno en la sección Usuarios. Después cierra sesión y vuelve a iniciar sesión.');
         }
@@ -59,5 +81,29 @@ export class StandDashboardComponent {
         this.error.set('No se pudieron cargar las métricas de tu stand.');
       },
     });
+  }
+
+  private buildGenderChartData(byGender: Record<string, number>): ChartConfiguration<'pie'>['data'] {
+    const entries = Object.entries(byGender).filter(([, v]) => v > 0);
+    return {
+      labels: entries.map(([k]) => GENDER_LABELS[k] ?? k),
+      datasets: [{
+        data: entries.map(([, v]) => v),
+        backgroundColor: ['#3b82f6', '#ec4899', '#10b981'],
+        hoverBackgroundColor: ['#2563eb', '#db2777', '#059669'],
+      }],
+    };
+  }
+
+  private buildAgeChartData(byAgeRange: Record<string, number>): ChartConfiguration<'pie'>['data'] {
+    const entries = Object.entries(byAgeRange).filter(([, v]) => v > 0);
+    return {
+      labels: entries.map(([k]) => `${k} años`),
+      datasets: [{
+        data: entries.map(([, v]) => v),
+        backgroundColor: ['#8b5cf6', '#06b6d4', '#f59e0b', '#ef4444', '#84cc16'],
+        hoverBackgroundColor: ['#7c3aed', '#0891b2', '#d97706', '#dc2626', '#65a30d'],
+      }],
+    };
   }
 }

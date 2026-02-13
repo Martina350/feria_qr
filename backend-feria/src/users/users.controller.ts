@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
@@ -7,6 +7,20 @@ import { Roles } from '../auth/roles.decorator';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  @Post()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  async create(
+    @Body()
+    body: {
+      email: string;
+      password: string;
+      standId: string;
+    },
+  ) {
+    return this.usersService.createCooperativa(body);
+  }
 
   @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)

@@ -5,7 +5,6 @@ export declare class ActivitiesService {
     completeActivity(input: {
         qrCodeId: string;
         standId?: string | null;
-        contentType: 'AHORRO' | 'FRAUDE' | 'CREDITO' | 'PRESUPUESTO' | 'INVERSION' | 'SEGUROS';
         completedBy?: string;
     }): Promise<{
         success: boolean;

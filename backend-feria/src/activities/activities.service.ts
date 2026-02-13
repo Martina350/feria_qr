@@ -8,13 +8,6 @@ export class ActivitiesService {
   async completeActivity(input: {
     qrCodeId: string;
     standId?: string | null;
-    contentType:
-      | 'AHORRO'
-      | 'FRAUDE'
-      | 'CREDITO'
-      | 'PRESUPUESTO'
-      | 'INVERSION'
-      | 'SEGUROS';
     completedBy?: string;
   }) {
     const qr = await this.findQrByIdOrCode(input.qrCodeId);
@@ -29,11 +22,20 @@ export class ActivitiesService {
       throw new BadRequestException('El stand asociado al usuario no es válido');
     }
 
+    const stand = await this.prisma.stand.findUnique({
+      where: { id: input.standId },
+    });
+    if (!stand) {
+      throw new BadRequestException('Stand no encontrado');
+    }
+
+    const contentType = stand.contentType;
+
     await this.prisma.activityCompletion.create({
       data: {
         studentId,
         standId: input.standId,
-        contentType: input.contentType,
+        contentType,
         completedBy: input.completedBy,
       },
     });

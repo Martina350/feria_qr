@@ -1,3 +1,71 @@
+.btn-full {
+  width: 100%;
+}
+
+.scanner-section {
+  width: 100%;
+}
+
+/* Escáner responsive: 100% ancho en móvil, centrado en tablet/desktop */
+#qr-reader,
+.qr-reader {
+  width: 100% !important;
+  max-width: min(400px, calc(100vw - 2rem));
+  min-height: 250px;
+  margin: 0 auto 1rem;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+@media (max-width: 480px) {
+  #qr-reader,
+  .qr-reader {
+    min-height: min(60vh, 400px);
+    max-width: 100%;
+  }
+}
+
+/* Elementos internos de html5-qrcode */
+:host ::ng-deep #qr-reader video,
+:host ::ng-deep #qr-reader img {
+  width: 100% !important;
+  max-width: 100%;
+  object-fit: cover;
+}
+
+:host ::ng-deep #qr-reader {
+  border: none !important;
+}
+
+.scanner-hint {
+  text-align: center;
+  color: #64748b;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.loading-state {
+  padding: 2rem;
+  text-align: center;
+  color: #64748b;
+}
+
+.result-card {
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  text-align: center;
+}
+
+.success-card {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.result-message {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
 .page {
   max-width: 480px;
   margin: 0 auto;
@@ -24,18 +92,18 @@ label {
   font-size: 0.9rem;
 }
 
-input,
-select {
+input {
   margin-top: 0.25rem;
-  padding: 0.5rem 0.75rem;
+  padding: 0.65rem 0.75rem;
+  font-size: 16px;
   border-radius: 0.5rem;
   border: 1px solid #cbd5f5;
   font-size: 0.95rem;
 }
 
 button {
-  align-self: flex-end;
-  padding: 0.6rem 1.4rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
   border-radius: 999px;
   border: none;
   background: linear-gradient(135deg, #0ea5e9, #6366f1);

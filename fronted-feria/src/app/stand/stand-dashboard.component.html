@@ -3,39 +3,37 @@
   <p class="subtitle">{{ data()!.cooperativeName }} · {{ data()!.contentType }}</p>
 
   <article class="stand-card" *ngIf="data()!.metrics as m">
-    <p class="total">
-      Estudiantes capacitados: <strong>{{ m.totalStudents }}</strong>
-    </p>
-
-    <div class="mini-grid">
-      <div>
-        <h3>Por género</h3>
-        <ul>
-          <li *ngFor="let g of (m.byGender | keyvalue)">
-            <span>{{ g.key }}:</span>
-            <strong>{{ g.value }}</strong>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <h3>Por rango de edad</h3>
-        <ul>
-          <li *ngFor="let a of (m.byAgeRange | keyvalue)">
-            <span>{{ a.key }}:</span>
-            <strong>{{ a.value }}</strong>
-          </li>
-        </ul>
-      </div>
+    <div class="total-card">
+      <h3>Estudiantes capacitados</h3>
+      <p class="total-number">{{ m.totalStudents }}</p>
     </div>
 
-    <div>
-      <h3>Por tipo de contenido impartido</h3>
-      <ul>
-        <li *ngFor="let c of (m.byContentType | keyvalue)">
-          <span>{{ c.key }}:</span>
-          <strong>{{ c.value }}</strong>
-        </li>
-      </ul>
+    <div class="chart-section">
+      <h3>Distribución por género</h3>
+      <div class="chart-container" *ngIf="genderChartData.datasets[0]?.data?.length; else noGenderData">
+        <canvas baseChart
+          [data]="genderChartData"
+          [options]="chartOptions"
+          type="pie">
+        </canvas>
+      </div>
+      <ng-template #noGenderData>
+        <p class="muted">Sin datos aún</p>
+      </ng-template>
+    </div>
+
+    <div class="chart-section">
+      <h3>Distribución por edad</h3>
+      <div class="chart-container" *ngIf="ageChartData.datasets[0]?.data?.length; else noAgeData">
+        <canvas baseChart
+          [data]="ageChartData"
+          [options]="chartOptions"
+          type="pie">
+        </canvas>
+      </div>
+      <ng-template #noAgeData>
+        <p class="muted">Sin datos aún</p>
+      </ng-template>
     </div>
   </article>
 

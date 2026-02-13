@@ -13,27 +13,14 @@ export class ActivitiesController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('COOPERATIVA')
   async complete(
-    @Body()
-    body: {
-      qrCodeId: string;
-      standId: string;
-      contentType:
-        | 'AHORRO'
-        | 'FRAUDE'
-        | 'CREDITO'
-        | 'PRESUPUESTO'
-        | 'INVERSION'
-        | 'SEGUROS';
-    },
+    @Body() body: { qrCodeId: string },
     @Req() req: { user: JwtPayload },
   ) {
     const standId = req.user?.standId;
 
-    // Seguridad: el standId siempre viene del usuario autenticado, no del body.
     return this.activitiesService.completeActivity({
       qrCodeId: body.qrCodeId,
-      standId,
-      contentType: body.contentType,
+      standId: standId ?? undefined,
       completedBy: req.user?.email,
     });
   }

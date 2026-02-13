@@ -27,8 +27,7 @@ let ActivitiesController = class ActivitiesController {
         const standId = req.user?.standId;
         return this.activitiesService.completeActivity({
             qrCodeId: body.qrCodeId,
-            standId,
-            contentType: body.contentType,
+            standId: standId ?? undefined,
             completedBy: req.user?.email,
         });
     }

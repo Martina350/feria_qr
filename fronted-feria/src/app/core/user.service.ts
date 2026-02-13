@@ -26,6 +26,10 @@ export class UserService {
     return this.http.get<UserListItem[]>(`${API_BASE_URL}/users`);
   }
 
+  createCooperativa(data: { email: string; password: string; standId: string }) {
+    return this.http.post<UserListItem>(`${API_BASE_URL}/users`, data);
+  }
+
   updateUserRole(id: string, role: UserRole): Observable<UserListItem> {
     return this.http.patch<UserListItem>(`${API_BASE_URL}/users/${id}/role`, {
       role,

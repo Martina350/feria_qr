@@ -1,6 +1,51 @@
 <div class="page">
-  <h1>Gestión de usuarios</h1>
-  <p class="intro">Lista de cooperativas registradas y administradores. Solo los administradores pueden ver y editar roles.</p>
+  <div class="page-header">
+    <div>
+      <h1>Gestión de usuarios</h1>
+      <p class="intro">Lista de cooperativas registradas y administradores.</p>
+    </div>
+    <button type="button" class="btn-primary" (click)="openModal()">Crear cooperativa</button>
+  </div>
+
+  @if (modalOpen()) {
+    <div class="modal-backdrop" (click)="closeModal()"></div>
+    <div class="modal" role="dialog">
+      <div class="modal-header">
+        <h2>Crear cooperativa</h2>
+        <button type="button" class="modal-close" (click)="closeModal()" aria-label="Cerrar">&times;</button>
+      </div>
+      <form [formGroup]="createForm" (ngSubmit)="submitCreate()">
+        <label>
+          Correo electrónico
+          <input type="email" formControlName="email" placeholder="cooperativa@ejemplo.com" />
+        </label>
+        <label>
+          Contraseña
+          <input type="password" formControlName="password" placeholder="Mínimo 6 caracteres" />
+        </label>
+        <label>
+          Confirmar contraseña
+          <input type="password" formControlName="confirmPassword" placeholder="Repite la contraseña" />
+        </label>
+        <label>
+          Stand asignado
+          <select formControlName="standId">
+            <option value="">Selecciona un stand</option>
+            @for (s of stands(); track s.id) {
+              <option [value]="s.id">{{ s.cooperativeName }} - {{ s.name }}</option>
+            }
+          </select>
+        </label>
+        <p class="error" *ngIf="error()">{{ error() }}</p>
+        <div class="modal-actions">
+          <button type="button" (click)="closeModal()">Cancelar</button>
+          <button type="submit" [disabled]="createForm.invalid || creating()">
+            {{ creating() ? 'Creando...' : 'Crear' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  }
 
   @if (loading()) {
     <p class="loading">Cargando usuarios…</p>

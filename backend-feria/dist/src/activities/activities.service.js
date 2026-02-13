@@ -26,11 +26,18 @@ let ActivitiesService = class ActivitiesService {
         if (!input.standId) {
             throw new common_1.BadRequestException('El stand asociado al usuario no es válido');
         }
+        const stand = await this.prisma.stand.findUnique({
+            where: { id: input.standId },
+        });
+        if (!stand) {
+            throw new common_1.BadRequestException('Stand no encontrado');
+        }
+        const contentType = stand.contentType;
         await this.prisma.activityCompletion.create({
             data: {
                 studentId,
                 standId: input.standId,
-                contentType: input.contentType,
+                contentType,
                 completedBy: input.completedBy,
             },
         });

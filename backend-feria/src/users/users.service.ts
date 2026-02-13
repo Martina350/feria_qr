@@ -1,10 +1,45 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
 import { Role } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
+
+  async createCooperativa(input: {
+    email: string;
+    password: string;
+    standId: string;
+  }) {
+    const existing = await this.prisma.user.findUnique({
+      where: { email: input.email },
+    });
+    if (existing) {
+      throw new BadRequestException('El correo ya está registrado');
+    }
+
+    const stand = await this.prisma.stand.findUnique({
+      where: { id: input.standId },
+    });
+    if (!stand) {
+      throw new BadRequestException('Stand no encontrado');
+    }
+
+    const hashed = await bcrypt.hash(input.password, 10);
+
+    const user = await this.prisma.user.create({
+      data: {
+        email: input.email,
+        password: hashed,
+        role: Role.COOPERATIVA,
+        standId: input.standId,
+      },
+    });
+
+    const { password, ...rest } = user;
+    return rest;
+  }
 
   async findAll() {
     const users = await this.prisma.user.findMany({

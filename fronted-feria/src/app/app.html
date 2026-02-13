@@ -24,17 +24,17 @@
     </div>
     <div class="nav-menu" [class.open]="menuOpen()">
       <ul class="nav-links">
-        <li><a routerLink="/dashboard/entries" routerLinkActive="active" (click)="closeMenu()">Dashboard ingresos</a></li>
-        <li><a routerLink="/dashboard/stands" routerLinkActive="active" (click)="closeMenu()">Dashboard stands</a></li>
         @if (userRole() === 'ADMIN') {
+          <li><a routerLink="/dashboard/entries" routerLinkActive="active" (click)="closeMenu()">Dashboard ingresos</a></li>
+          <li><a routerLink="/dashboard/stands" routerLinkActive="active" (click)="closeMenu()">Dashboard stands</a></li>
           <li><a routerLink="/admin/users" routerLinkActive="active" (click)="closeMenu()">Usuarios</a></li>
           <li><a routerLink="/admin/qr-management" routerLinkActive="active" (click)="closeMenu()">QRs</a></li>
+          <li><a routerLink="/admin/register-student" routerLinkActive="active" (click)="closeMenu()">Estudiantes</a></li>
         }
-        <li><a routerLink="/stand/scan-qr" routerLinkActive="active" (click)="closeMenu()">Registro stand</a></li>
         @if (userRole() === 'COOPERATIVA') {
+          <li><a routerLink="/stand/scan-qr" routerLinkActive="active" (click)="closeMenu()">Escanear QR</a></li>
           <li><a routerLink="/stand/dashboard" routerLinkActive="active" (click)="closeMenu()">Mi stand</a></li>
         }
-        <li><a routerLink="/admin/register-student" routerLinkActive="active" (click)="closeMenu()">Estudiantes</a></li>
       </ul>
       <button type="button" class="logout-link logout-mobile" (click)="logout()">Salir</button>
       <button type="button" class="logout-link logout-desktop" (click)="logout()">Salir</button>

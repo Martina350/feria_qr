@@ -1,31 +1,28 @@
 <div class="page">
-  <h1>Registro de actividad de stand</h1>
+  <h1>Escanear QR</h1>
 
-  <form [formGroup]="form" (ngSubmit)="submit()">
-    <label>
-      Código del QR del estudiante
-      <input type="text" formControlName="qrCodeId" placeholder="Ej: GMW-001 o escanea el QR" />
-    </label>
+  @if (success()) {
+    <div class="result-card success-card">
+      <p class="result-message">{{ success() }}</p>
+      <button type="button" class="btn-full" (click)="scanAgain()">Escanear nuevamente</button>
+    </div>
+  } @else {
+    <div class="scanner-section">
+      @if (cameraError()) {
+        <p class="error">{{ cameraError() }}</p>
+        <button type="button" class="btn-full" (click)="scanAgain()">Reintentar cámara</button>
+      } @else if (loading()) {
+        <div class="loading-state">
+          <p>Registrando actividad...</p>
+        </div>
+      } @else {
+        <div id="qr-reader" class="qr-reader"></div>
+        <p class="scanner-hint">Apunta la cámara al código QR del estudiante. Solo escaneo, sin escribir.</p>
+      }
 
-    <label>
-      Tipo de contenido impartido
-      <select formControlName="contentType">
-        <option value="AHORRO">Ahorro</option>
-        <option value="FRAUDE">Prevención de fraude</option>
-        <option value="CREDITO">Crédito responsable</option>
-        <option value="PRESUPUESTO">Presupuesto</option>
-        <option value="INVERSION">Inversión</option>
-        <option value="SEGUROS">Seguros</option>
-      </select>
-    </label>
-
-    <button type="submit" [disabled]="form.invalid || loading()">
-      {{ loading() ? 'Guardando...' : 'Registrar actividad' }}
-    </button>
-
-    <p class="success" *ngIf="success()">{{ success() }}</p>
-    <p class="error" *ngIf="error()">{{ error() }}</p>
-  </form>
+      @if (error()) {
+        <p class="error">{{ error() }}</p>
+      }
+    </div>
+  }
 </div>
-
-
